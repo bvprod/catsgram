@@ -8,7 +8,6 @@ import ru.yandex.practicum.catsgram.model.User;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,7 +17,7 @@ public class UserService {
         return users.values();
     }
 
-    public User create(User user) {
+    public User createUser(User user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
@@ -30,15 +29,19 @@ public class UserService {
         return user;
     }
 
-    public User put(User user) {
+    public User updateUser(User user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
         users.put(user.getEmail(), user);
+
         return user;
     }
 
     public User findUserByEmail(String email) {
+        if (email == null) {
+            return null;
+        }
         return users.get(email);
     }
 }
