@@ -38,7 +38,6 @@ public class UserController {
             throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
         }
         users.put(user.getEmail(), user);
-
         return user;
     }
 }
