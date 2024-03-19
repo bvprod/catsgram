@@ -2,6 +2,7 @@ package ru.yandex.practicum.catsgram.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.model.User;
 import ru.yandex.practicum.catsgram.service.UserService;
 
@@ -30,5 +31,10 @@ public class UserController {
     @PutMapping
     public User put(@RequestBody User user) {
        return userService.put(user);
+    }
+
+    @GetMapping("/{email}")
+    public User getPost(@PathVariable String email) {
+        return userService.findUserByEmail(email);
     }
 }

@@ -8,6 +8,7 @@ import ru.yandex.practicum.catsgram.model.User;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
