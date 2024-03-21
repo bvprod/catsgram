@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class PostService {
     private final UserService userService;
     private final List<Post> posts = new ArrayList<>();
-
     private static Integer globalId = 0;
 
     @Autowired
@@ -24,16 +23,29 @@ public class PostService {
     }
 
     public List<Post> findAll(Integer size, Integer from, String sort) {
-        return posts.stream().sorted((p0, p1) -> {
-            int comp = p0.getCreationDate().compareTo(p1.getCreationDate()); //прямой порядок сортировки
-            if(sort.equals("desc")){
-                comp = -1 * comp; //обратный порядок сортировки
-            }
-            return comp;
-        }).skip(from).limit(size).collect(Collectors.toList());
+        return posts.stream()
+                .sorted((p0, p1) -> compareByCreationDate(p0, p1, sort))
+                .skip(from)
+                .limit(size)
+                .collect(Collectors.toList());
     }
 
-    private static Integer getNextId(){
+    public List<Post> getFeed(String sort, int size, List<String> friends) {
+        return posts.stream()
+                .sorted((p0, p1) -> compareByCreationDate(p0, p1, sort))
+                .filter((post -> friends.contains(post.getAuthor())))
+                .limit(size).collect(Collectors.toList());
+    }
+
+    private int compareByCreationDate(Post p0, Post p1, String sort) {
+        int comp = p0.getCreationDate().compareTo(p1.getCreationDate()); //прямой порядок сортировки
+        if (sort.equals("desc")) {
+            comp = -1 * comp; //обратный порядок сортировки
+        }
+        return comp;
+    }
+
+    private static Integer getNextId() {
         return globalId++;
     }
 
@@ -56,4 +68,5 @@ public class PostService {
                 .findFirst()
                 .orElseThrow(() -> new PostNotFoundException(String.format("Пост № %d не найден", postId)));
     }
+
 }
